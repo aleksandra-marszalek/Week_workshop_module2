@@ -47,4 +47,10 @@ public class Hotel {
 	public void setAcceptsAnimals(String acceptsAnimals) {
 		this.acceptsAnimals = acceptsAnimals;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	
 }
