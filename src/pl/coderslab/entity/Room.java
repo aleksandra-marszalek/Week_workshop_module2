@@ -6,17 +6,19 @@ public class Room {
 	private int capacity;
 	private double price;
 	private int hotelId;
+	private int insideNr;
 	
 	
 	public Room () {
 		
 	}
 	
-	public Room(String description, int capacity, double price, int hotelId) {
+	public Room(String description, int capacity, double price, int hotelId, int insideNr) {
 		this.description = description;
 		this.capacity = capacity;
 		this.price = price;
 		this.hotelId = hotelId;
+		this.insideNr = insideNr;
 	}
 	public String getDescription() {
 		return description;
@@ -44,6 +46,14 @@ public class Room {
 	}
 	public int getId() {
 		return id;
+	}
+
+	public int getInsideNr() {
+		return insideNr;
+	}
+
+	public void setInsideNr(int insideNr) {
+		this.insideNr = insideNr;
 	}
 	
 	
