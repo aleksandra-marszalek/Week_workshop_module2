@@ -12,11 +12,12 @@ import pl.coderslab.entity.User;
 public class UserDao {
 		private static final String CREATE_USER_QUERY = "INSERT INTO users (name, email, password, user_group_id) VALUES (?, ?, ?, ?)";
 		private static final String READ_USER_QUERY = "Select * from users where id = ?"; 
-		private static final String UPDATE_USER_QUERY = "UPDATE users SET name = ? , email = ?, password = ?, user_group_id =? WHERE id = ?";
+		private static final String UPDATE_USER_QUERY = "UPDATE users SET name = ? , email = ?, password = ?, user_group_id = ? WHERE id = ?";
 		private static final String DELETE_USER_QUERY = "DELETE FROM users where id = ?"; 
 		private static final String READ_ALL_USERS_QUERY = "SELECT * FROM users";
 		private static final String READ_ALL_USERS_BY_GROUP_ID_QUERY = "Select * from users where user_group_id = ?";
 		private static final String READ_USER_BY_EMAIL_QUERY = "Select * from users where email=?";
+		private static final String ADD_USER_TO_GROUP_QUERY = "Update users SET user_group_id = ? where id = ?";
 		
 		
 		public static void showUser (User user) {
@@ -163,6 +164,17 @@ public class UserDao {
 			    return user;
 			}
 		
+		public static void assignToGroup(User user, int groupId) {
+			try (Connection connection = DbUtil.getConnection();
+					PreparedStatement statement = connection.prepareStatement(ADD_USER_TO_GROUP_QUERY);) {
+				statement.setInt(2, user.getId()); 
+				statement.setInt(1, groupId); 
+				statement.executeUpdate();
+			} catch (Exception e) {
+				System.out.println("Error: ");
+				e.printStackTrace();
+				} 
+			}
 		
 		}
 			
