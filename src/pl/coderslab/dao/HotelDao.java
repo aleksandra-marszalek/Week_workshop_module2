@@ -10,7 +10,7 @@ import pl.coderslab.entity.Hotel;
 import pl.coderslab.entity.User;
 
 public class HotelDao {
-	private static final String CREATE_HOTEL_QUERY = "INSERT INTO hotels (name, address, descrption, accepts_animals) VALUES (?, ?, ?, ?)";
+	private static final String CREATE_HOTEL_QUERY = "INSERT INTO hotels (name, address, description, accepts_animals) VALUES (?, ?, ?, ?)";
 	private static final String READ_HOTEL_QUERY = "Select * from hotels where id = ?"; 
 	private static final String UPDATE_HOTEL_QUERY = "UPDATE hotels SET name = ? , address = ?, description = ?, accepts_animals = ? WHERE id = ?";
 	private static final String DELETE_HOTEL_QUERY = "DELETE FROM hotels where id = ?"; 
