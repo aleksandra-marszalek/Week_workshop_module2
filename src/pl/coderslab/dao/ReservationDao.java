@@ -21,7 +21,7 @@ public class ReservationDao {
 	
 	public static void showReservation (Reservation reservation) {
 		System.out.println("Id: " + reservation.getId() + ", user Id: " + reservation.getUserId() + 
-				", room Id: " + reservation.getUserId() + ", created: " + reservation.getCreated() + ", date from: " + reservation.getDateFrom() +
+				", room Id: " + reservation.getRoomId() + ", created: " + reservation.getCreated() + ", date from: " + reservation.getDateFrom() +
 				", date to: " + reservation.getDateTo() + ", description: " + reservation.getDescription() + ", status: " + reservation.getStatus());
 	}
 	
