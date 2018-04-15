@@ -3,6 +3,7 @@ package pl.coderslab;
 import java.sql.Connection;
 import java.sql.Date;
 
+import pl.coderslab.administrative.HotelManager;
 import pl.coderslab.dao.HotelDao;
 import pl.coderslab.dao.ReservationDao;
 import pl.coderslab.dao.RoomDao;
@@ -17,10 +18,7 @@ import pl.coderslab.entity.UserGroup;
 public class Main {
 	public static void main(String[] args) {
 		
-		Reservation res1 = ReservationDao.readAll()[1];
-
-		ReservationDao.showReservation(res1);
-		
+		HotelManager.hotelManager();
 		
 	}
 }

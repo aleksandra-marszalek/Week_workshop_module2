@@ -18,6 +18,7 @@ public class UserDao {
 		private static final String READ_ALL_USERS_BY_GROUP_ID_QUERY = "Select * from users where user_group_id = ?";
 		private static final String READ_USER_BY_EMAIL_QUERY = "Select * from users where email=?";
 		private static final String ADD_USER_TO_GROUP_QUERY = "Update users SET user_group_id = ? where id = ?";
+		private static final String READ_USER_BY_NAME_QUERY = "Select * from users where name LIKE ?";
 		
 		
 		public static void showUser (User user) {
@@ -148,6 +149,28 @@ public class UserDao {
 			try (Connection connection = DbUtil.getConnection();
 			PreparedStatement statement = connection.prepareStatement(READ_USER_BY_EMAIL_QUERY);) {
 			statement.setString(1, userEmailToLowerCase);
+			try (ResultSet resultSet = statement.executeQuery()) {
+				while (resultSet.next()) {
+					user.setId(resultSet.getInt("id")); 
+					user.setName(resultSet.getString("name")); 
+					user.setEmail(resultSet.getString("email")); 
+					user.setPassword(resultSet.getString("password")); 
+					user.setUserGroupId(resultSet.getInt("user_group_id")); 
+					}
+				}
+			} catch (Exception e) { 
+				System.out.println("Error: ");
+				e.printStackTrace(); 
+				}
+			    return user;
+			}
+		
+		public static User readByName(String userName) {
+			String userNameToLowerCase = userName.toLowerCase();
+			User user = new User();
+			try (Connection connection = DbUtil.getConnection();
+			PreparedStatement statement = connection.prepareStatement(READ_USER_BY_NAME_QUERY);) {
+			statement.setString(1, userNameToLowerCase);
 			try (ResultSet resultSet = statement.executeQuery()) {
 				while (resultSet.next()) {
 					user.setId(resultSet.getInt("id")); 
