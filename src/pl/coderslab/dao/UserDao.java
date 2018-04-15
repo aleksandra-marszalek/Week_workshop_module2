@@ -10,9 +10,9 @@ import pl.coderslab.DbUtil;
 import pl.coderslab.entity.User;
 
 public class UserDao {
-		private static final String CREATE_USER_QUERY = "INSERT INTO users (name, email, password, user_group_id) VALUES (?, ?, ?, ?)";
+		private static final String CREATE_USER_QUERY = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
 		private static final String READ_USER_QUERY = "Select * from users where id = ?"; 
-		private static final String UPDATE_USER_QUERY = "UPDATE users SET name = ? , email = ?, password = ?, user_group_id = ? WHERE id = ?";
+		private static final String UPDATE_USER_QUERY = "UPDATE users SET name = ? , email = ?, password = ?  WHERE id = ?";
 		private static final String DELETE_USER_QUERY = "DELETE FROM users where id = ?"; 
 		private static final String READ_ALL_USERS_QUERY = "SELECT * FROM users";
 		private static final String READ_ALL_USERS_BY_GROUP_ID_QUERY = "Select * from users where user_group_id = ?";
@@ -31,7 +31,6 @@ public class UserDao {
 			        statement.setString(1, user.getName());
 			        statement.setString(2, user.getEmail());
 			        statement.setString(3, user.getPassword());
-			        statement.setInt(4, user.getUserGroupId());
 			        statement.executeUpdate();
 			} catch (Exception e) { 
 				System.out.println("Error: ");
@@ -64,11 +63,10 @@ public class UserDao {
 		public static void update(User user) {
 			try (Connection connection = DbUtil.getConnection();
 					PreparedStatement statement = connection.prepareStatement(UPDATE_USER_QUERY);) {
-				statement.setInt(5, user.getId()); 
+				statement.setInt(4, user.getId()); 
 				statement.setString(1, user.getName()); 
 				statement.setString(2, user.getEmail()); 
 				statement.setString(3, user.getPassword());
-				statement.setInt(4, user.getUserGroupId()); 
 				statement.executeUpdate();
 			} catch (Exception e) {
 				System.out.println("Error: ");
