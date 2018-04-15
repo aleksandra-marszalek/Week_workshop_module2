@@ -23,9 +23,17 @@ public class BookingProgram {
 				
 				if (input1.equalsIgnoreCase("a")) {
 					AdminManager.adminManager();
-				} else {
+				} else if (input1.equalsIgnoreCase("u")){
 					UserPanel.userView();
 				}
+				
+				System.out.println("Would you like to do anything else? \n"
+						+ "Please insert: \n"
+						+ "A - if you want to continue as an admin,\n"
+						+ "U - if you want to continue as a regular user.\n"
+						+ "Q - if you want to quit.");
+				input1 = scan.nextLine();
+				
 			
 				
 			} catch (Exception e) {

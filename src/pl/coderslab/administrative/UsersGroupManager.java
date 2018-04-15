@@ -60,7 +60,7 @@ public static void userGroupManager () {
 						if (groupNew.getId()==0) {
 							System.out.println("No such group id.");
 						} else {
-							System.out.println("Please insert new user Name: ");
+							System.out.println("Please insert new Group Name: ");
 							String name = scan.nextLine();
 							groupNew.setName(name);
 							UserGroupDao.update(groupNew);	

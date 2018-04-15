@@ -54,7 +54,13 @@ public class AdminManager {
 						ReservationManager.reservationManager();	
 		
 					}
-				
+					System.out.println("Would you like to do anything else? Please insert right command: \n"
+							+ "H - for hotels management,\n"
+							+ "U - for users management,\n"
+							+ "G - for user groups management,\n"
+							+ "R - for reservations management,\n"
+							+ "Q - to quit program.");
+					input1 = scan.nextLine();
 					
 			// try catch - not to break the program if the input is incorrect --> it sends the user to another command	
 					
@@ -65,16 +71,11 @@ public class AdminManager {
 				} 
 				
 			// ask if there is anything else the user would like to do - if quit - the program stops
-				System.out.println("Would you like to do anything else? Please insert right command: \n"
-						+ "H - for hotels management,\n"
-						+ "U - for users management,\n"
-						+ "G - for user groups management,\n"
-						+ "R - for reservations management,\n"
-						+ "Q - to quit program.");
-				input1 = scan.nextLine();
+				
 				
 			
 			}
+			
 			
 			// confirmation that the program has stopped.
 			System.out.println("You have quit the administrative panel. See you later!");

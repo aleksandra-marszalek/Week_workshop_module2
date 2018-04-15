@@ -27,13 +27,16 @@ public class RoomManager {
 			hotelNew = HotelDao.readById(hotelId);
 		}
 		Room[] allRooms = RoomDao.readAllByHotelId(hotelId);
-		System.out.println("Here are all rooms of this hotel: ");
-		
-		for (int i=0; i<allRooms.length; i++) {
-			RoomDao.showRoom(RoomDao.readAll()[i]);
-			System.out.println("");
-			}
-		
+		if (allRooms.length == 0) {
+			System.out.println("There are no rooms in this hotel yet.");
+		} else { 
+			System.out.println("Here are all rooms of this hotel: ");
+			
+			for (int i=0; i<allRooms.length; i++) {
+				RoomDao.showRoom(RoomDao.readAllByHotelId(hotelId)[i]);
+				System.out.println("");
+				}
+		}
 		// show the options
 			System.out.println("Please choose right command:\n"
 					+ "add - to add a new room,\n"
@@ -126,7 +129,7 @@ public class RoomManager {
 					System.out.println("Here are all the current Rooms: ");
 					allRooms = RoomDao.readAllByHotelId(hotelId);
 					for (int i=0; i<allRooms.length; i++) {
-						RoomDao.showRoom(RoomDao.readAll()[i]);
+						RoomDao.showRoom(RoomDao.readAllByHotelId(hotelId)[i]);
 						System.out.println("");
 						}
 				} catch (NumberFormatException e) {
