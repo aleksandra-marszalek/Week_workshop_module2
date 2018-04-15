@@ -17,12 +17,23 @@ public class RoomManager {
 		// welcome to the program, show all rooms using simple for loop
 		System.out.println("Please insert the id of the hotel, which you would like to manage the rooms of: ");
 		int hotelId = Integer.parseInt(scan.nextLine());
+		Hotel hotelNew = HotelDao.readById(hotelId);
+		
+		//if there is no hotel with the id:
+		while (hotelNew.getId()==0) {
+			System.out.println("No such hotel.");
+			System.out.println("Insert valid id of the hotel you would like to manage the rooms of: ");
+			hotelId = Integer.parseInt(scan.nextLine());
+			hotelNew = HotelDao.readById(hotelId);
+		}
 		Room[] allRooms = RoomDao.readAllByHotelId(hotelId);
 		System.out.println("Here are all rooms of this hotel: ");
+		
 		for (int i=0; i<allRooms.length; i++) {
 			RoomDao.showRoom(RoomDao.readAll()[i]);
 			System.out.println("");
 			}
+		
 		// show the options
 			System.out.println("Please choose right command:\n"
 					+ "add - to add a new room,\n"
@@ -61,43 +72,50 @@ public class RoomManager {
 						System.out.println("Please insert the id of the Room You want to edit: ");
 						int roomIdtoEdit = Integer.parseInt(scan.nextLine());
 						Room roomNew = RoomDao.readById(roomIdtoEdit);
-						System.out.println("Please insert new Room Inside nr: ");
-						int insideNr = Integer.parseInt(scan.nextLine());
-						roomNew.setInsideNr(insideNr);
-						System.out.println("Please insert new description: ");
-						String description = scan.nextLine();
-						roomNew.setDescription(description);
-						System.out.println("Please insert new capacity: ");
-						int capacity = Integer.parseInt(scan.nextLine());
-						roomNew.setCapacity(capacity);
-						System.out.println("Please new price: ");
-						Double price = Double.parseDouble(scan.nextLine());
-						roomNew.setPrice(price);
-						roomNew.setHotelId(hotelId);
-						RoomDao.create(roomNew);	
+						if (roomNew.getId()==0) {
+							System.out.println("No such room.");
+						} else {
+							System.out.println("Please insert new Room Inside nr: ");
+							int insideNr = Integer.parseInt(scan.nextLine());
+							roomNew.setInsideNr(insideNr);
+							System.out.println("Please insert new description: ");
+							String description = scan.nextLine();
+							roomNew.setDescription(description);
+							System.out.println("Please insert new capacity: ");
+							int capacity = Integer.parseInt(scan.nextLine());
+							roomNew.setCapacity(capacity);
+							System.out.println("Please new price: ");
+							Double price = Double.parseDouble(scan.nextLine());
+							roomNew.setPrice(price);
+							roomNew.setHotelId(hotelId);
+							RoomDao.update(roomNew);	
+						}
 				
 				//if the users input is delete - asks for the id nr and deletes the chosen room object		
 					} else if (input1.equalsIgnoreCase("delete")) {
 						System.out.println("Please insert the id of the Room You want to delete: ");
 						int roomIdtoDelete = Integer.parseInt(scan.nextLine());
 						Room roomNew = RoomDao.readById(roomIdtoDelete);
+						if (roomNew.getId()==0) {
+							System.out.println("No such room.");
+						} else {
 				// extra option for me - asks if the user is sure to delete all the data - with loop - wait for the answer yes/no
 				//only after given the confirmation, deletes the user data with delete method
-						System.out.println("Are you sure to delete all the data from this room?");
-						RoomDao.showRoom(roomNew);
-						System.out.println("\nWrite yes to delete / no to abort: ");
-						String decision = scan.nextLine();
-						while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+							System.out.println("Are you sure to delete all the data from this room?");
+							RoomDao.showRoom(roomNew);
 							System.out.println("\nWrite yes to delete / no to abort: ");
-							decision = scan.nextLine();
+							String decision = scan.nextLine();
+							while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+								System.out.println("\nWrite yes to delete / no to abort: ");
+								decision = scan.nextLine();
+							}
+							if (decision.equalsIgnoreCase("yes")) {
+								RoomDao.delete(roomNew.getId());
+								System.out.println("You have deleted the chosen room.");
+							} else {
+								System.out.println("The room has not been deleted.");
+							}
 						}
-						if (decision.equalsIgnoreCase("yes")) {
-							RoomDao.delete(roomNew.getId());
-							System.out.println("You have deleted the chosen room.");
-						} else {
-							System.out.println("The room has not been deleted.");
-						}
-						
 					
 		// After the chosen method, program again shows all the users data 		
 		

@@ -63,6 +63,8 @@ public class HotelManager {
 							String acceptsAnimals = scan.nextLine();
 							hotelNew.setAcceptsAnimals(acceptsAnimals);
 							HotelDao.create(hotelNew);	
+						
+							
 						}  else if (input1.equalsIgnoreCase("rooms")) {
 							RoomManager.roomManager();
 							
@@ -72,43 +74,49 @@ public class HotelManager {
 							System.out.println("Please insert the id of the Hotel You want to edit: ");
 							int hotelIdtoEdit = Integer.parseInt(scan.nextLine());
 							Hotel hotelNew = HotelDao.readById(hotelIdtoEdit);
-							System.out.println("Please insert new Hotel Name: ");
-							String name = scan.nextLine();
-							hotelNew.setName(name);
-							System.out.println("Please insert new description: ");
-							String description = scan.nextLine();
-							hotelNew.setDescription(description);
-							System.out.println("Please insert new address: ");
-							String address = scan.nextLine();
-							hotelNew.setAddress(address);
-							System.out.println("Please insert if the hotel accepts animals (yes/no): ");
-							String acceptsAnimals = scan.nextLine();
-							hotelNew.setAcceptsAnimals(acceptsAnimals);
-							HotelDao.update(hotelNew);
+							if (hotelNew.getId()==0) {
+								System.out.println("No such hotel.");
+							} else {
+								System.out.println("Please insert new Hotel Name: ");
+								String name = scan.nextLine();
+								hotelNew.setName(name);
+								System.out.println("Please insert new description: ");
+								String description = scan.nextLine();
+								hotelNew.setDescription(description);
+								System.out.println("Please insert new address: ");
+								String address = scan.nextLine();
+								hotelNew.setAddress(address);
+								System.out.println("Please insert if the hotel accepts animals (yes/no): ");
+								String acceptsAnimals = scan.nextLine();
+								hotelNew.setAcceptsAnimals(acceptsAnimals);
+								HotelDao.update(hotelNew);
+							}
 					
 					//if the users input is delete - asks for the id nr and deletes the chosen hotel object		
 						} else if (input1.equalsIgnoreCase("delete")) {
 							System.out.println("Please insert the id of the Hotel You want to delete: ");
 							int hotelIdToDelete = Integer.parseInt(scan.nextLine());
 							Hotel hotelNew = HotelDao.readById(hotelIdToDelete);
+							if (hotelNew.getId()==0) {
+								System.out.println("No such hotel.");
+							} else {
 					// extra option for me - asks if the user is sure to delete all the data - with loop - wait for the answer yes/no
 					//only after given the confirmation, deletes the user data with delete method
-							System.out.println("Are you sure to delete all the data from this user?");
-							HotelDao.showHotels(hotelNew);
-							System.out.println("\nWrite yes to delete / no to abort: ");
-							String decision = scan.nextLine();
-							while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+								System.out.println("Are you sure to delete all the data from this user?");
+								HotelDao.showHotels(hotelNew);
 								System.out.println("\nWrite yes to delete / no to abort: ");
-								decision = scan.nextLine();
-							
-							if (decision.equalsIgnoreCase("yes")) {
-								HotelDao.delete(hotelNew.getId());
-								System.out.println("You have deleted the chosen hotel.");
-							} else {
-								System.out.println("The hotel has not been deleted.");
+								String decision = scan.nextLine();
+								while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+									System.out.println("\nWrite yes to delete / no to abort: ");
+									decision = scan.nextLine();
+								}
+								if (decision.equalsIgnoreCase("yes")) {
+									HotelDao.delete(hotelNew.getId());
+									System.out.println("You have deleted the chosen hotel.");
+								} else {
+									System.out.println("The hotel has not been deleted.");
+								}
 							}
-							
-						}
 			// After the chosen method, program again shows all the users data 		
 			
 					System.out.println("Here are all the current Hotels: ");
@@ -127,14 +135,14 @@ public class HotelManager {
 					} 
 					
 				// ask if there is anything else the user would like to do - if quit - the program stops
-					System.out.println("Would you like to do anything else? Please choose right command: add/edit/delete/quit: ");
+					System.out.println("Would you like to do anything else? Please choose right command: add/edit/delete/rooms/quit: ");
 					input1 = scan.nextLine();
 					
 				
 				}
 				
 				// confirmation that the program has stopped.
-				System.out.println("You have quit the excercise manager. See you later!");
+				System.out.println("You have quit the hotel manager. See you later!");
 				
 			
 			} catch (Exception e) {

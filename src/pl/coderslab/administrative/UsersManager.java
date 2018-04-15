@@ -85,16 +85,20 @@ public class UsersManager {
 							userIdtoEdit = Integer.parseInt(scan.nextLine());
 						}
 						User userNew = UserDao.readById(userIdtoEdit);
-						System.out.println("Please insert new user Name: ");
-						String name = scan.nextLine();
-						userNew.setName(name);
-						System.out.println("Please insert new password: ");
-						String password = scan.nextLine();
-						userNew.setPassword(password);
-						System.out.println("Please insert new email: ");
-						String email = scan.nextLine();
-						userNew.setEmail(email);
-						UserDao.update(userNew);	
+						if (userNew.getId()==0) {
+							System.out.println("No such user.");
+						} else {
+							System.out.println("Please insert new user Name: ");
+							String name = scan.nextLine();
+							userNew.setName(name);
+							System.out.println("Please insert new password: ");
+							String password = scan.nextLine();
+							userNew.setPassword(password);
+							System.out.println("Please insert new email: ");
+							String email = scan.nextLine();
+							userNew.setEmail(email);
+							UserDao.update(userNew);	
+						}
 					
 						
 				//ASSIGN		
@@ -124,10 +128,13 @@ public class UsersManager {
 							userIdtoEdit = Integer.parseInt(scan.nextLine());
 						}
 						User userNew = UserDao.readById(userIdtoEdit);	
-						System.out.println("Insert the id of the user group, you would like to assign to the chosen user: ");
-						int groupId = Integer.parseInt(scan.nextLine());
-						UserDao.assignToGroup(userNew, groupId);
-						
+						if (userNew.getId()==0) {
+							System.out.println("No such user.");
+						} else {
+							System.out.println("Insert the id of the user group, you would like to assign to the chosen user: ");
+							int groupId = Integer.parseInt(scan.nextLine());
+							UserDao.assignToGroup(userNew, groupId);
+						}
 						
 				//DELETE	
 						
@@ -157,27 +164,28 @@ public class UsersManager {
 						}
 						
 						User userNew = UserDao.readById(userIdtoEdit);
+						if (userNew.getId()==0) {
+							System.out.println("No such user.");
+						} else {
 				// extra option for me - asks if the user is sure to delete all the data - with loop - wait for the answer yes/no
 				//only after given the confirmation, deletes the user data with delete method
-						System.out.println("Are you sure to delete all the data from this user?");
-						UserDao.showUser(userNew);
-						System.out.println("\nWrite yes to delete / no to abort: ");
-						String decision = scan.nextLine();
-						while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+							System.out.println("Are you sure to delete all the data from this user?");
+							UserDao.showUser(userNew);
 							System.out.println("\nWrite yes to delete / no to abort: ");
-							decision = scan.nextLine();
+							String decision = scan.nextLine();
+							while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+								System.out.println("\nWrite yes to delete / no to abort: ");
+								decision = scan.nextLine();
+							}
+							
+							if (decision.equalsIgnoreCase("yes")) {
+								UserDao.delete(userNew.getId());
+								System.out.println("You have deleted the chosen user.");
+							} else {
+								System.out.println("The user has not been deleted.");
+							}
 						}
-						
-						if (decision.equalsIgnoreCase("yes")) {
-							UserDao.delete(userNew.getId());
-							System.out.println("You have deleted the chosen user.");
-						} else {
-							System.out.println("The user has not been deleted.");
-						}
-						
 					
-				
-		
 				
 					
 			// try catch - not to break the program if the input is incorrect --> it sends the user to another command	

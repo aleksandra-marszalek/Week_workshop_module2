@@ -57,11 +57,14 @@ public static void userGroupManager () {
 						System.out.println("Please insert the id of the Group You want to edit: ");
 						int groupIdtoEdit = Integer.parseInt(scan.nextLine());
 						UserGroup groupNew = UserGroupDao.readById(groupIdtoEdit);
-						System.out.println("Please insert new user Name: ");
-						String name = scan.nextLine();
-						groupNew.setName(name);
-						UserGroupDao.update(groupNew);	
-					
+						if (groupNew.getId()==0) {
+							System.out.println("No such group id.");
+						} else {
+							System.out.println("Please insert new user Name: ");
+							String name = scan.nextLine();
+							groupNew.setName(name);
+							UserGroupDao.update(groupNew);	
+						}
 						
 				//SHOW	
 						
@@ -69,12 +72,16 @@ public static void userGroupManager () {
 						System.out.println("Please insert the id of the Group You want to see the users of: ");
 						int groupId = Integer.parseInt(scan.nextLine());
 						UserGroup groupNew = UserGroupDao.readById(groupId);
-						System.out.println("All users in " + groupNew.getName() + " are :");
-						
-						User[] allUsersByGroupId = UserDao.readAllByGroupId(groupId);
-						for (int i=0; i<allUsersByGroupId.length; i++) {
-							UserDao.showUser(UserDao.readAll()[i]);
-							System.out.println("");
+						if (groupNew.getId()==0) {
+							System.out.println("No such group id.");
+						} else {
+							System.out.println("All users in " + groupNew.getName() + " are :");
+							
+							User[] allUsersByGroupId = UserDao.readAllByGroupId(groupId);
+							for (int i=0; i<allUsersByGroupId.length; i++) {
+								UserDao.showUser(UserDao.readAll()[i]);
+								System.out.println("");
+							}
 						}
 						
 						
@@ -85,26 +92,28 @@ public static void userGroupManager () {
 						System.out.println("Please insert the id of the Group You want to delete: ");
 						int groupIdtoDelete = Integer.parseInt(scan.nextLine());
 						UserGroup groupNew = UserGroupDao.readById(groupIdtoDelete);
+						if (groupNew.getId()==0) {
+							System.out.println("No such group id.");
+						} else {
 				// extra option for me - asks if the user is sure to delete all the data - with loop - wait for the answer yes/no
 				//only after given the confirmation, deletes the user data with delete method
-						System.out.println("Are you sure to delete all the data from this group?");
-						UserGroupDao.showUserGroup(groupNew);
-						System.out.println("\nWrite yes to delete / no to abort: ");
-						String decision = scan.nextLine();
-						while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+							System.out.println("Are you sure to delete all the data from this group?");
+							UserGroupDao.showUserGroup(groupNew);
 							System.out.println("\nWrite yes to delete / no to abort: ");
-							decision = scan.nextLine();
+							String decision = scan.nextLine();
+							while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+								System.out.println("\nWrite yes to delete / no to abort: ");
+								decision = scan.nextLine();
+							}
+							if (decision.equalsIgnoreCase("yes")) {
+								UserGroupDao.delete(groupIdtoDelete);
+								System.out.println("You have deleted the chosen group.");
+							} else {
+								System.out.println("The group has not been deleted.");
+							}
+							
 						}
-						if (decision.equalsIgnoreCase("yes")) {
-							UserGroupDao.delete(groupIdtoDelete);
-							System.out.println("You have deleted the chosen group.");
-						} else {
-							System.out.println("The group has not been deleted.");
-						}
-						
-					
 				
-		
 				
 					
 			// try catch - not to break the program if the input is incorrect --> it sends the user to another command	
