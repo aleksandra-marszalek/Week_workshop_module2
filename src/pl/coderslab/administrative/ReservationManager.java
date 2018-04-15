@@ -96,7 +96,9 @@ public static void reservationManager () {
 							System.out.println("Please insert the date the reservations ends(RRRR-MM-DD): ");
 							String dateTo = scan.nextLine();
 							reservationNew.setDateTo(dateTo);
+							System.out.println("Please insert any description: ");
 							String description = scan.nextLine();
+							reservationNew.setDescription(description);
 							reservationNew.setStatus("accepted");
 							ReservationDao.update(reservationNew);	
 						}
