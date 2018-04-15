@@ -78,40 +78,71 @@ public static void reservationManager () {
 						System.out.println("Please insert the id of the reservation You want to edit: ");
 						int resIdtoEdit = Integer.parseInt(scan.nextLine());
 						Reservation reservationNew = ReservationDao.readById(resIdtoEdit);
-						System.out.println("Please insert user id: ");
-						int userId = Integer.parseInt(scan.nextLine());
-						reservationNew.setUserId(userId);
-						System.out.println("Please insert room id: ");
-						int roomId = Integer.parseInt(scan.nextLine());
-						reservationNew.setRoomId(roomId);
-						LocalDateTime datetime = LocalDateTime.now();
-						String now = datetime.toString();
-						reservationNew.setCreated(now);
-						System.out.println("Please insert the date the reservations starts(RRRR-MM-DD): ");
-						String dateFrom = scan.nextLine();
-						reservationNew.setDateFrom(dateFrom);
-						System.out.println("Please insert the date the reservations ends(RRRR-MM-DD): ");
-						String dateTo = scan.nextLine();
-						reservationNew.setDateTo(dateTo);
-						String description = scan.nextLine();
-						reservationNew.setStatus("accepted");
-						ReservationDao.update(reservationNew);	
-					
+						if (reservationNew.getId() == 0) {
+							System.out.println("There is no such reservation.");
+						} else {
+							System.out.println("Please insert user id: ");
+							int userId = Integer.parseInt(scan.nextLine());
+							reservationNew.setUserId(userId);
+							System.out.println("Please insert room id: ");
+							int roomId = Integer.parseInt(scan.nextLine());
+							reservationNew.setRoomId(roomId);
+							LocalDateTime datetime = LocalDateTime.now();
+							String now = datetime.toString();
+							reservationNew.setCreated(now);
+							System.out.println("Please insert the date the reservations starts(RRRR-MM-DD): ");
+							String dateFrom = scan.nextLine();
+							reservationNew.setDateFrom(dateFrom);
+							System.out.println("Please insert the date the reservations ends(RRRR-MM-DD): ");
+							String dateTo = scan.nextLine();
+							reservationNew.setDateTo(dateTo);
+							String description = scan.nextLine();
+							reservationNew.setStatus("accepted");
+							ReservationDao.update(reservationNew);	
+						}
 						
 				//SHOW	
 						
 					} else if (input1.equalsIgnoreCase("show")) {
-						System.out.println("Please insert the id of the user you want to see the reservations of: ");
-						int userId = Integer.parseInt(scan.nextLine());
-						User userNew = UserDao.readById(userId);
-						System.out.println("All reservations made by " + userNew.getName() + " are :");
-						
-						Reservation[] allByUserId = ReservationDao.readAllByUserId(userId);
-						for (int i=0; i<allByUserId.length; i++) {
-							ReservationDao.showReservation(ReservationDao.readAll()[i]);
-							System.out.println("");
+						System.out.println("Hi, you have chosen to display all the reservations by the chosen user.");
+						System.out.println("Insert the way you would like to search for the user:\n"
+								+ "Email - if you want to find the user by email,\n"
+								+ "Id - if you want to find the user by id,\n"
+								+ "Name - if you want to find the user by name and surname.");
+						String input2 = scan.nextLine();
+						while (!input2.equalsIgnoreCase("email") && !input2.equalsIgnoreCase("id") && 
+								   !input2.equalsIgnoreCase("name")) {
+								System.out.println("I don't understand. Please insert the right command: Email/Id/Name");
+								input2 = scan.nextLine();
+							}
+						int userId;
+						if (input2.equalsIgnoreCase("email")) {
+							System.out.println("Insert the email of the user you want to see reservations of: ");
+							String email = scan.nextLine();
+							userId = UserDao.readByEmail(email).getId();
+						} else if (input2.equalsIgnoreCase("name")) {
+							System.out.println("Insert the name of the user you want to see the reservations of (in format: name surname): ");
+							String name = scan.nextLine();
+							userId = UserDao.readByEmail(name).getId();
+						} else {
+							System.out.println("Please insert the id of the user You want to see the reservations of: ");
+							userId = Integer.parseInt(scan.nextLine());
 						}
-						
+						User userNew = UserDao.readById(userId);
+						if (userNew.getId() == 0) {
+							System.out.println("There is no such user. ");
+						} else {
+							Reservation[] allByUserId = ReservationDao.readAllByUserId(userId);
+							if (allByUserId.length == 0) {
+								System.out.println("The user has no reservation.");
+							} else {
+								System.out.println("All reservations made by " + userNew.getName() + " are :");
+								for (int i=0; i<allByUserId.length; i++) {
+									ReservationDao.showReservation(ReservationDao.readAll()[i]);
+									System.out.println("");
+								}
+							}
+						}	
 				// ASSIGN STATUS:
 						
 					} else if (input1.equalsIgnoreCase("status")) {
@@ -120,26 +151,31 @@ public static void reservationManager () {
 						Reservation reservationNew = ReservationDao.readById(resIdtoChange);
 				// extra option for me - asks if the user is sure to delete all the data - with loop - wait for the answer yes/no
 				//only after given the confirmation, deletes the user data with delete method
-						System.out.println("Are you sure change the status of this reservation?");
-						ReservationDao.showReservation(reservationNew);
-						System.out.println("\nWrite yes to delete / no to abort: ");
-						String decision = scan.nextLine();
-						while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
-							System.out.println("\nWrite yes to delete / no to abort: ");
-							decision = scan.nextLine();
-						}
-						if (decision.equalsIgnoreCase("yes")) {
-							System.out.println("Please choose the new status(accepted/paid/cancelled): ");
-							String status = scan.nextLine();
-							while (!status.equalsIgnoreCase("accepted") && !status.equalsIgnoreCase("paid") && 
-								   !status.equalsIgnoreCase("cancelled")) {
-								System.out.println("I don't understand. Please insert the right command: add/edit/delete/show/status/quit");
-								status = scan.nextLine();
-							}
-							ReservationDao.changeReservationStatus(reservationNew, status);
-							System.out.println("You have updated the chosen reservation status.");
+						if (reservationNew.getId()==0) {
+							System.out.println("No such reservation id.");
 						} else {
-							System.out.println("The status of the reservation has not been changed.");
+								
+							System.out.println("Are you sure change the status of this reservation?");
+							ReservationDao.showReservation(reservationNew);
+							System.out.println("\nWrite yes to delete / no to abort: ");
+							String decision = scan.nextLine();
+							while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+								System.out.println("\nWrite yes to delete / no to abort: ");
+								decision = scan.nextLine();
+							}
+							if (decision.equalsIgnoreCase("yes")) {
+								System.out.println("Please choose the new status(accepted/paid/cancelled): ");
+								String status = scan.nextLine();
+								while (!status.equalsIgnoreCase("accepted") && !status.equalsIgnoreCase("paid") && 
+									   !status.equalsIgnoreCase("cancelled")) {
+									System.out.println("I don't understand. Please insert the right command: add/edit/delete/show/status/quit");
+									status = scan.nextLine();
+								}
+								ReservationDao.changeReservationStatus(reservationNew, status);
+								System.out.println("You have updated the chosen reservation status.");
+							} else {
+								System.out.println("The status of the reservation has not been changed.");
+							}
 						}
 						
 				//DELETE	
@@ -149,23 +185,26 @@ public static void reservationManager () {
 						System.out.println("Please insert the id of the Reservation You want to delete: ");
 						int resIdtoDelete = Integer.parseInt(scan.nextLine());
 						Reservation reservationNew = ReservationDao.readById(resIdtoDelete);
+						if (reservationNew.getId()==0) {
+							System.out.println("No such reservation id.");
+						} else {
 				// extra option for me - asks if the user is sure to delete all the data - with loop - wait for the answer yes/no
 				//only after given the confirmation, deletes the user data with delete method
-						System.out.println("Are you sure to delete all the data from this group?");
-						ReservationDao.showReservation(reservationNew);
-						System.out.println("\nWrite yes to delete / no to abort: ");
-						String decision = scan.nextLine();
-						while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+							System.out.println("Are you sure to delete all the data from this reservation?");
+							ReservationDao.showReservation(reservationNew);
 							System.out.println("\nWrite yes to delete / no to abort: ");
-							decision = scan.nextLine();
+							String decision = scan.nextLine();
+							while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
+								System.out.println("\nWrite yes to delete / no to abort: ");
+								decision = scan.nextLine();
+							}
+							if (decision.equalsIgnoreCase("yes")) {
+								ReservationDao.delete(resIdtoDelete);
+								System.out.println("You have deleted the chosen reservation.");
+							} else {
+								System.out.println("The reservation has not been deleted.");
+							}
 						}
-						if (decision.equalsIgnoreCase("yes")) {
-							ReservationDao.delete(resIdtoDelete);
-							System.out.println("You have deleted the chosen reservation.");
-						} else {
-							System.out.println("The reservation has not been deleted.");
-						}
-						
 					
 				
 		
