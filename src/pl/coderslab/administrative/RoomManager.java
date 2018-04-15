@@ -90,7 +90,7 @@ public class RoomManager {
 						while (!decision.equalsIgnoreCase("yes") && !decision.equalsIgnoreCase("no")) {
 							System.out.println("\nWrite yes to delete / no to abort: ");
 							decision = scan.nextLine();
-						
+						}
 						if (decision.equalsIgnoreCase("yes")) {
 							RoomDao.delete(roomNew.getId());
 							System.out.println("You have deleted the chosen room.");
@@ -98,10 +98,10 @@ public class RoomManager {
 							System.out.println("The room has not been deleted.");
 						}
 						
-					}
+					
 		// After the chosen method, program again shows all the users data 		
 		
-				
+					
 					
 			// try catch - not to break the program if the input is incorrect --> it sends the user to another command	
 					}
