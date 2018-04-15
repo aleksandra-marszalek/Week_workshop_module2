@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 
 import pl.coderslab.administrative.HotelManager;
+import pl.coderslab.administrative.ReservationManager;
 import pl.coderslab.administrative.RoomManager;
 import pl.coderslab.administrative.UsersGroupManager;
 import pl.coderslab.administrative.UsersManager;
@@ -21,7 +22,7 @@ import pl.coderslab.entity.UserGroup;
 public class Main {
 	public static void main(String[] args) {
 		
-		UsersGroupManager.userGroupManager();
+		ReservationManager.reservationManager();
 		
 	}
 }

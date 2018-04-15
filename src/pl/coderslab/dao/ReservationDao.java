@@ -22,7 +22,7 @@ public class ReservationDao {
 	public static void showReservation (Reservation reservation) {
 		System.out.println("Id: " + reservation.getId() + ", user Id: " + reservation.getUserId() + 
 				", room Id: " + reservation.getUserId() + ", created: " + reservation.getCreated() + ", date from: " + reservation.getDateFrom() +
-				", description: " + reservation.getDescription() + ", status: " + reservation.getStatus());
+				", date to: " + reservation.getDateTo() + ", description: " + reservation.getDescription() + ", status: " + reservation.getStatus());
 	}
 	
 	public static void create(Reservation reservation) {
@@ -168,11 +168,11 @@ public class ReservationDao {
 			return uArray;
 			}
 	
-	public static void changeReservationStatus(Reservation reservation) {
+	public static void changeReservationStatus(Reservation reservation, String status) {
 		try (Connection connection = DbUtil.getConnection();
 				PreparedStatement statement = connection.prepareStatement(CHANGE_RESERVATION_STATUS);) {
 			statement.setInt(2, reservation.getId()); 
-	        statement.setString(1, reservation.getStatus());
+	        statement.setString(1, status);
 			statement.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("Error: ");
